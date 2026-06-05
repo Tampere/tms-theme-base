@@ -14,12 +14,25 @@ form {
     textarea {
         line-height: 1;
         padding: $theme-spacing-half;
-        border: 1px solid $secondary;
+        border: 1px solid $color-black;
         border-radius: $theme-spacing-quarter;
 
         &::placeholder {
             color: lighten($black, 10%);
         }
+    }
+}
+
+/**
+ * Event search
+ */
+.event-search-form {
+    .order-3 {
+        order: 3;
+    }
+
+    .order-4 {
+        order: 4;
     }
 }
 

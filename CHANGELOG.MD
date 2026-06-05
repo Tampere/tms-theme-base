@@ -7,8 +7,403 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.73.0] - 2026-05-05
+
+- TMS-1237: Add a custom Google Translate functionality to navigation
+- Remove delete site-link from wp-admin
+
+## [1.72.0] - 2026-04-12
+
+- TMS-1260: Add missing alt-text for enlargened images in image-block
+- TMS-1261: Change highlighted articles pill colors
+- TMS-1264: Fix Eventz to use endpoint url from env
+- TMS-1263: Fix pagination from showing arrow button on last page
+
+## [1.71.3] - 2026-03-16
+
+- TMS-1259: Disable link underline in theme.json
+
+## [1.71.2] - 2026-02-25
+
+- TMS-1255: Check for redipress class before indexing contact field
+
+## [1.71.1] - 2026-02-15
+
+- TMS-1164: Button hover color fixes
+
+## [1.71.0] - 2026-02-03
+
+- TMS-1164: Change button hover & focus styles
+
+## [1.70.0] - 2025-12-17
+
+- TMS-1230: Allow audio-block
+- TMS-1226: Change focus order on events-search form
+
+## [1.69.0] - 2025-11-18
+
+- Fix PHP deprecations
+
+## [1.68.1] - 2025-11-10
+
+- TMS-1204-2: Remove external-link icon for tms.production.geniem.io links
+
+## [1.68.0] - 2025-11-05
+
+- TMS-1204: Add expand-icon for image gallery item if it is expandable
+
+## [1.67.0] - 2025-10-22
+
+- TMS-1209: Rework window.s translations inline script
+- TMS-1201: Add iframe-field for accordion-blocks video field
+
+## [1.66.1] - 2025-10-01
+
+- TMS-1199: Change events-search no-results text
+
+## [1.66.0] - 2025-10-01
+
+- TMS-1201: Add iframe-field for video fields
+
+## [1.65.0] - 2025-09-08
+
+- TMS-1166: Fix duet-datepicker border on focus
+- TMS-1163: Search results breadcrumbs accessibility fixes
+
+## [1.64.0] - 2025-08-13
+
+- TMS-1160: Fix elements focus outline thickness
+- TMS-1158: Disable mobile-nav from closing when scrolling by clicking the inner container
+
+## [1.63.0] - 2025-08-11
+
+- TMS-1162:
+    - Hide breadcrumbs pseudo-elements text from screen readers
+    - Add aria-label translations for breadcrumbs
+- TMS-1170: Change hamburger-menu icon color for häive-theme
+- TMS-1176: Add homepage-selection for some-linklist fields
+- TMS-1183: Use Logger for EventzClient errors
+
+## [1.62.0] - 2025-06-23
+
+- TMS-1172: Add video possibility to hero-museum layout
+
+## [1.61.0] - 2025-06-05
+
+- TMS-1152: Add custom controllers to hero-video
+
+## [1.60.4] - 2025-05-14
+
+- TMS-1131: Change form border-colors
+
+## [1.60.3] - 2025-05-14
+
+- TMS-1155: Fix screen-reader text for mobile-nav dropdowns
+
+## [1.60.2] - 2025-04-30
+
+- TMS-1139: Add another link-button to CTA-component
+
+## [1.60.1] - 2025-04-23
+
+- TMS-1095: Add field to disable pagination for events-calendar template
+
+## [1.60.0] - 2025-04-09
+
+- TMS-1114: Decrease image-meta paddings
+- TMS-1093: Add graphics for dynamic event main images
+
+## [1.59.9] - 2025-04-02
+
+- TMS-1108: Add new Häive color-theme
+
+## [1.59.8] - 2025-03-03
+
+- TMS-1109: Change ContentColumns & CallToAction TextArea fields to Wysiwyg
+
+## [1.59.7] - 2025-02-24
+
+- TMS-1100: Show multiple locations for events if available
+
+## [1.59.6] - 2025-02-18
+
+- Add scripts to be ignored by Cookiebot
+
+
+## [1.59.5] - 2025-01-22
+
+- TMS-1091: Remove align-wide class from accordion block
+
+## [1.59.4] - 2024-12-09
+
+- TMS-1089: Fix event fetching for events-component
+
+## [1.59.3] - 2024-11-25
+
+- TMS-1059: Eventz changes:
+    - Add "Sign up"- & "Purchase tickets"-links
+    - Add translation to homepage link
+    - Fix regex pattern for short description
+- TMS-1087: Event-page main image style change
+- TMS-1083: Change event short description to be used from API
+
+## [1.59.2] - 2024-11-19
+
+- TMS-1088: Add fields to redipress schema
+
+## [1.59.1] - 2024-10-28
+
+- TMS-1075-fix: Early return added to ImageGalleryFormatter
+
+## [1.59.0] - 2024-10-24
+
+- TMS-1075: Redipress 2 filters
+
+## [1.58.3] - 2024-09-25
+
+- TMS-1067: Show price-info for event in listing if it's free
+
+## [1.58.2] - 2024-09-12
+
+- TMS-1061: Change hero video-field from URL to File, since the URL wasn't working
+
+## [1.58.1] - 2024-09-03
+
+- TMS-1062: Increase menu-dropdown button size
+
+## [1.58.0] - 2024-08-21
+
+- TMS-1057: Increase articles lead-text font-size
+
+## [1.57.0] - 2024-06-26
+
+- TMS-1054: Add "remove hero overlay" -field to default page template
+- TMS-1055: Fix mailto-links escaping-filter
+
+## [1.56.0] - 2024-06-12
+
+- TMS-1050: Add if-statements into accordion script to prevent breaking other elements functionality
+
+## [1.55.0] - 2024-06-04
+
+- TMS-1044: Accordion-block changes
+    - Add open all & close all -buttons & js functionalities
+    - Add open / close text next to accordion toggler icon
+- TMS-1043:
+    - Fix date checking for event
+    - Minimize the amount of event data loops
+
+## [1.54.11] - 2024-05-14
+
+- TMS-1029: Change contacts-blocks width
+- TMS-1034: Add default text for articles related content title
+- TMS-1032:
+    - Add seconds to countdown-timer block
+    - Change countdown update interval to a second if seconds are shown
+- TMS-1028: Add social media link-list block, component & footer section
+
+## [1.54.10] - 2024-05-07
+
+- TMS-1033: Add new optional hero-museum component
+- TMS-1038: Fix theme-mustavalkoinen lang-menu styles
+
+## [1.54.9] - 2024-04-18
+
+- TMS-1031: Fix event-component recurring manual-event dates
+- TMS-1013: Skip dynamic events in recurring event checking
+
+## [1.54.8] - 2024-04-17
+
+- TMS-1019: Add black & white color theme
+- TMS-1013:
+    - Fix weekly date loop if event has multiple days in entries
+    - Sort entries date-array
+    - Fix checking for recurring event arrays
+
+## [1.54.7] - 2024-03-26
+
+- TMS-914:
+    - Add new anchor-links block & functionalities
+    - Add anchor id-elements to blocks & components
+- TMS-1013: Add entries fetching to Eventz event-integration
+- TMS-968: Add recurring events to event-component
+- TMS-1021: Fix image alignment in image-carousel modal
+
+## [1.54.6] - 2024-03-18
+
+- TMS-996: Change bold image-caption text to normal
+- TMS-1009: Fix error when fetching Eventz response with languages other than fi & en
+- TMS-1015: Header accessibility fixes
+- TMS-1017: Add image alt-text to imported news
+- TMS-1018: Remove external-link icons from imported news image links
+
+## [1.54.5] - 2024-02-01
+
+- TMS-977: Add 'clear form' button to event-search
+- TMS-1010: Fix events-lift component sorting with recurring events
+
+## [1.54.4] - 2024-01-15
+
+- TMS-980: Add redipress_include_search to include component contents in search results
+
+## [1.54.3] - 2023-12-04
+
+- TMS-939:
+    - Search-page form accessibility fixes
+    - Header search accessibility fixes
+    - Added focus on input when opening header search
+- TMS-940: Hide current language on mobile header if only 2 languages in use
+- TMS-942:
+    - Check / uncheck search filter checkboxes depending on choices
+    - Trim contact phone number in href
+    - Increase fly-out-nav z-index to prevent chatbot from overlapping elements
+
+## [1.54.2] - 2023-11-22
+
+- TMS-974: Fix event formatting if only manual events are shown
+
+## [1.54.1] - 2023-11-22
+
+- TMS-974: Fix fatal error in EventzFormatter
+
+## [1.54.0] - 2023-11-21
+
+### Added
+
+- TMS-974:
+    - Add recurring events to lists as single item.
+    - Add recurring events to events-component
+- TMS-994: Add missing list-item block to use
+
+### Fixed
+
+- TMS-935: Archive filter accessibility fixes
+
+## [1.53.0] - 2023-11-07
+
+### Added
+
+- TMS-950:
+    - Empty check for phone repeater.
+    - Place of business posts to block
+    - Contacts styles & accessibility
+
+## [1.52.0] - 2023-10-23
+
+### Added
+
+- TMS-970: Add image caption text to call-to-action and content-columns blocks.
+
+## [1.51.0] - 2023-10-12
+
+### Fixed
+
+- TMS-934: Add screen-reader info for article categories.
+- TMS-936: Image carousel accessibility fixes
+- TMS-933: Modaal accessibility fixes
+
+## [1.50.0] - 2023-10-04
+
+- TMS-978: Add has-line-height-normal class
+
+## [1.49.0] - 2023-09-15
+
+- TMS-962: Add Lunch Menus plugin caps to roles.
+
+## [1.48.0] - 2023-09-13
+
+- TMS-973: Fix manual event sorting
+
+
+## [1.47.0] - 2023-09-04
+
+- TMS-964-2: Update translation and format pricing.
+
+## [1.46.0] - 2023-08-30
+
+- TMS-964: Add new Eventz api and remove old one.
+
+## [1.45.0] - 2023-07-31
+
+### Modified
+
+- PIEN-8943: Allowed ReCaptcha field in GravityForms
+
+## [1.44.0] - 2023-06-22
+
+### Modified
+
+- TMS-956: Add Manual Events plugin caps to roles.
+
+## [1.43.0] - 2023-06-21
+
+### Modified
+
+- TMS-956: Add event datetime objects to normalized event for easier sorting.
+- TMS-956: Allow filtering displayed events in Events layout.
+
+## [1.42.4] - 2023-05-24
+
+### Fixed
+
+- TMS-931: Change back-to-top button to focus main-content, Add screen-reader info for links that go to external sites
+- TMS-931: Navigation accessibility fixes
+
+## [1.42.3] - 2023-05-02
+
+### Fixed
+
+- PIEN-8394: Add API image to og:image tag #466
+
+## [1.42.2] - 2023-04-28
+
+### Fixed
+
+- PIEN-8585: Check empty links #465
+
+## [1.42.1] - 2023-04-27
+
+### Fixed
+
+- PIEN-8524: Display API images #464
+
+## [1.42.0] - 2023-04-11
+
+- PIEN-8157: PHP 8.1
+- PIEN-8439: Add pageID meta tag #463
+
+## [1.41.2] - 2022-02-11
+
+### Fixed
+
+- TMS-916: Fix order of selected api contacts. #443
+
+## [1.41.1] - 2022-10-17
+
+### Fixed
+
+- PIEN-7726: Fix showing images in home page highlight.
+
+## [1.41.0] - 2022-10-03
+
+### Fixed
+
+- PIEN-7666: Hide non-public pages from breadcrumbs.
+
+### Added
+
+- PIEN-7658: Settings field for body scripts.
+
+## [1.40.0] - 2022-09-22
+
+### Added
+
 - TMS-897: Add video component & block video align option
 - TMS-910: Add play.quickchannel.com embed support #438
+
+### Fixed
+
+- PIEN-7639: Fix events sharing link.
 
 ## [1.39.3] - 2022-09-07
 

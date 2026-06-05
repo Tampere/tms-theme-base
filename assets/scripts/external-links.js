@@ -19,14 +19,21 @@ export default class ExternalLinks {
      */
     docReady() {
         // Add external icon for links pointing outside of the current domain
-        const domain = window.location.hostname;
+        const domains = [ window.location.hostname, 'tms.production.geniem.io' ];
         const icon = Common.makeIcon( 'external', 'icon--medium ml-1' );
 
+        // Translations are defined in models/strings.php,
+        // and loaded to windows.s in lib/Assets.php.
+        const translations = window.s.common || {
+            target_blank: 'Opens in a new window',
+            external_link: 'The link takes you to an external website',
+        };
+
         // Links in regular context
-        $( '#main-content a[href*="//"]:not(.button, .logo-wall__link, .link-list a, [href*="' + domain + '"])' ).append( icon ); // eslint-disable-line
+        $( '#main-content a[href*="//"]:not(.figure__link, .button, .logo-wall__link, .link-list a, [href*="' + domains[0] + '"], [href*="' + domains[1] + '"])' ).append( icon ); // eslint-disable-line
 
         // Links with icons (replace current icon with "opens in new window" -icon)
-        $( '#main-content a[href*="//"]:has(.icon):not(.link-list a, [href*="' + domain + '"])' ).each( function() {
+        $( '#main-content a[href*="//"]:has(.icon):not(.link-list a, [href*="' + domains[0] + '"], [href*="' + domains[1] + '"])' ).each( function() { // eslint-disable-line
             const iconOld = $( this ).find( '.icon' );
             const iconNew = $.parseHTML( icon );
 
@@ -46,13 +53,17 @@ export default class ExternalLinks {
             $( this ).children( '.icon' ).attr( 'aria-hidden', 'true' );
         } );
 
-        // Translations are defined in models/strings.php,
-        // and loaded to windows.s in lib/Assets.php.
-        const translations = window.s.common || {
-            target_blank: 'Opens in a new window',
-        };
+        // Add screen reader text that informs if the link is an external website
+        $( '#main-content a[href*="//"]:not([href*="' + domains[0] + '"], [href*="' + domains[1] + '"])' ).append( `<span class="is-sr-only external-info">(${ translations.external_link })</span>` ); // eslint-disable-line
 
         // Add instructional text for screen readers on links which open a new window/tab
-        $( 'a[target="_blank"]' ).append( `<span class="is-sr-only">(${ translations.target_blank })</span>` );
+        if ( $( 'a[target="_blank"]' ).children( '.external-info' ).length > 0 ) {
+            // Append the info with external link info
+            $( 'a[target="_blank"] .external-info' ).append( `(${ translations.target_blank })</span>` );
+        }
+        else {
+            // Append info to the link as its own element
+            $( 'a[target="_blank"]' ).append( `<span class="is-sr-only">(${ translations.target_blank })</span>` );
+        }
     }
 }

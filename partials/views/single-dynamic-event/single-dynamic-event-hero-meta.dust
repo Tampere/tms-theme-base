@@ -1,22 +1,39 @@
 <div class="is-flex is-flex-wrap-wrap is-justify-content-space-between">
     {?event.normalized.date}
         <div class="is-flex is-align-items-center has-width-100-until-desktop mb-3 mb-0-desktop">
-            {>"ui/icon" icon="date" class="icon--xlarge mr-4 mr-6-desktop {template_classes.hero_icon|s}" /}
-            {event.normalized.date|s}
+            {>"ui/icon" icon="date" class="icon--xlarge mr-4 mr-6-desktop {template_classes.hero_icon|attr}" /}
+            <p class="mt-0 mb-0">
+                {event.normalized.date|html}
+            </p>
         </div>
     {/event.normalized.date}
 
     {?event.normalized.time}
         <div class="is-flex is-align-items-center has-width-100-until-desktop mb-3 mb-0-desktop">
-            {>"ui/icon" icon="time" class="icon--xlarge mr-4 mr-6-desktop {template_classes.hero_icon|s}" /}
-            {event.normalized.time|s}
+            {>"ui/icon" icon="time" class="icon--xlarge mr-4 mr-6-desktop {template_classes.hero_icon|attr}" /}
+            <p class="mt-0 mb-0">
+                {event.normalized.time|html}
+            </p>
         </div>
     {/event.normalized.time}
 
     {?event.normalized.location}
         <div class="is-flex is-align-items-center has-width-100-until-desktop">
-            {>"ui/icon" icon="location" class="icon--xlarge mr-4 mr-6-desktop {template_classes.hero_icon|s}" /}
-            {event.normalized.location.name|s}
+            {>"ui/icon" icon="location" class="icon--xlarge mr-4 mr-6-desktop {template_classes.hero_icon|attr}" /}
+            <p class="mt-0 mb-0">
+                {event.normalized.location.name|html}
+                {?event.normalized.location_count.other_locations_string}
+                    {event.normalized.location_count.other_locations_string|html}
+                {/event.normalized.location_count.other_locations_string}
+            </p>
         </div>
     {/event.normalized.location}
+
+    {?event.normalized.link_purchase_ticket}
+        <div class="has-width-100 has-text-left mt-3">
+            <a href="{event.normalized.link_purchase_ticket.url|url}" target="_blank" class="is-inline-block button is-small is-primary">
+                {event.normalized.link_purchase_ticket.name|html}
+            </a>
+        </div>
+    {/event.normalized.link_purchase_ticket}
 </div>

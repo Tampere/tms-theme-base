@@ -19,7 +19,7 @@ class Header extends Model {
      * Hooks.
      */
     public function hooks() {
-        add_filter(
+        \add_filter(
             'dustpress/menu/item/classes',
             Closure::fromCallable( [ $this, 'menu_item_classes' ] ),
             10,
@@ -86,8 +86,17 @@ class Header extends Model {
             'hide_empty' => 0,
         ];
 
-        $languages = pll_the_languages( $args );
+        $languages = \pll_the_languages( $args );
         $lang_data = [ 'all' => $languages ];
+
+        // If there are two languages, show only one in mobile view
+        if ( count( $languages ) === 2 ) {
+            $args['hide_current'] = 1;
+            $without_current      = \pll_the_languages( $args );
+            $lang_data_mobile     = [
+                'all' => $without_current,
+            ];
+        }
 
         foreach ( $languages as $lang ) {
             if ( ! empty( $lang['current_lang'] ) ) {
@@ -99,10 +108,11 @@ class Header extends Model {
         }
 
         return [
-            'partial' => 'dropdown' === $lang_nav_display
+            'partial'               => 'dropdown' === $lang_nav_display
                 ? 'ui/menu/language-nav-dropdown'
                 : 'ui/menu/language-nav',
-            'links'   => $lang_data,
+            'links'                 => $lang_data,
+            'links_without_current' => $lang_data_mobile,
         ];
     }
 
@@ -274,7 +284,7 @@ class Header extends Model {
     }
 
     /**
-     * Get custom scripts from Site Settings.
+     * Get custom head scripts from Site Settings.
      *
      * @return false|mixed
      */
@@ -282,6 +292,17 @@ class Header extends Model {
         $head_scripts = Settings::get_setting( 'header_scripts' );
 
         return ( ! empty( $head_scripts ) ) ? $head_scripts : false;
+    }
+
+    /**
+     * Get custom body scripts from Site Settings.
+     *
+     * @return false|mixed
+     */
+    public function body_custom_scripts() {
+        $body_scripts = Settings::get_setting( 'body_scripts' );
+
+        return ( ! empty( $body_scripts ) ) ? $body_scripts : false;
     }
 
     /**
@@ -378,6 +399,11 @@ class Header extends Model {
             }
         }
 
+        $current_page = \get_queried_object();
+        if ( ! empty( $current_page->ID ) && (int) $item->object_id === $current_page->ID ) {
+            $classes['is_current'] = 'is-current';
+        }
+
         return $classes;
     }
 
@@ -419,5 +445,27 @@ class Header extends Model {
      */
     public function strings() {
         return ( new Strings() )->s()['header'];
+    }
+
+    /**
+     * Get gtranslate dropdown menu
+     *
+     * @return array|null
+     */
+    public function gtranslate_menu() : ?array {
+        // Check if the menu is enabled in site settings
+        if ( ! Settings::get_setting( 'enable_gtranslate_menu' ) ) {
+            return null;
+        }
+
+        $current_lang = DPT_PLL_ACTIVE ? \pll_current_language() : \get_locale();
+
+        return [
+            'current_language' => $current_lang,
+            'select_text'      => \__( 'Select language', 'tms-theme-base' ),
+            'disclaimer_text'  => \__( 'The City of Tampere is not responsible for translations made by Google Translate.', 'tms-theme-base' ),
+            'cookies_disabled' => \__( "Unfortunately you are not able to use the translation option since you haven't accepted related cookies. You can accept cookies by clicking the Accept cookies button below.", 'tms-theme-base' ),
+            'accept_cookies'   => \__( 'Accept cookies', 'tms-theme-base' ),
+        ];
     }
 }

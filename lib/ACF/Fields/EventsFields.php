@@ -57,16 +57,20 @@ class EventsFields extends \Geniem\ACF\Field\Group {
                 'label'        => 'Alkaa tänään',
                 'instructions' => 'Alkupäivämääränä käytetään kuluvaa päivää',
             ],
-            'keyword'         => [
-                'label'        => 'Avainsana',
+            'category' => [
+                'label'        => 'Kategoria',
                 'instructions' => '',
             ],
-            'location'        => [
-                'label'        => 'Tapahtumapaikka',
+            'area' => [
+                'label'        => 'Alue',
                 'instructions' => '',
             ],
-            'publisher'       => [
-                'label'        => 'Julkaisija',
+            'target' => [
+                'label'        => 'Kohderyhmä',
+                'instructions' => '',
+            ],
+            'tag' => [
+                'label'        => 'Tag',
                 'instructions' => '',
             ],
             'text'            => [
@@ -90,12 +94,12 @@ class EventsFields extends \Geniem\ACF\Field\Group {
         $key = $this->get_key();
 
         $title_field = ( new Field\Text( $strings['title']['label'] ) )
-            ->set_key( "${key}_title" )
+            ->set_key( "{$key}_title" )
             ->set_name( 'title' )
             ->set_instructions( $strings['title']['instructions'] );
 
         $start_field = ( new Field\DatePicker( $strings['start']['label'] ) )
-            ->set_key( "${key}_start" )
+            ->set_key( "{$key}_start" )
             ->set_name( 'start' )
             ->set_display_format( 'j.n.Y' )
             ->set_return_format( 'Y-m-d' )
@@ -103,7 +107,7 @@ class EventsFields extends \Geniem\ACF\Field\Group {
             ->set_instructions( $strings['start']['instructions'] );
 
         $end_field = ( new Field\DatePicker( $strings['end']['label'] ) )
-            ->set_key( "${key}_end" )
+            ->set_key( "{$key}_end" )
             ->set_name( 'end' )
             ->set_display_format( 'j.n.Y' )
             ->set_return_format( 'Y-m-d' )
@@ -111,49 +115,61 @@ class EventsFields extends \Geniem\ACF\Field\Group {
             ->set_instructions( $strings['end']['instructions'] );
 
         $starts_today_field = ( new Field\TrueFalse( $strings['starts_today']['label'] ) )
-            ->set_key( "${key}_starts_today" )
+            ->set_key( "{$key}_starts_today" )
             ->set_name( 'starts_today' )
             ->use_ui()
             ->set_default_value( false )
             ->set_wrapper_width( 50 )
             ->set_instructions( $strings['starts_today']['instructions'] );
 
-        $keyword_field = ( new Field\Select( $strings['keyword']['label'] ) )
-            ->set_key( "${key}_keyword" )
-            ->set_name( 'keyword' )
+        $category_field = ( new Field\Select( $strings['category']['label'] ) )
+            ->set_key( "{$key}_category" )
+            ->set_name( 'category' )
             ->use_ui()
             ->use_ajax()
             ->allow_null()
             ->allow_multiple()
             ->set_wrapper_width( 50 )
-            ->set_instructions( $strings['keyword']['instructions'] );
+            ->set_instructions( $strings['category']['instructions'] );
 
-        $location_field = ( new Field\Select( $strings['location']['label'] ) )
-            ->set_key( "${key}_location" )
-            ->set_name( 'location' )
+        $area_field = ( new Field\Select( $strings['area']['label'] ) )
+            ->set_key( "{$key}_area" )
+            ->set_name( 'area' )
             ->use_ui()
             ->allow_null()
+            ->allow_multiple()
             ->use_ajax()
             ->set_wrapper_width( 50 )
-            ->set_instructions( $strings['location']['instructions'] );
+            ->set_instructions( $strings['area']['instructions'] );
 
-        $publisher_field = ( new Field\Select( $strings['publisher']['label'] ) )
-            ->set_key( "${key}_publisher" )
-            ->set_name( 'publisher' )
+        $target_field = ( new Field\Select( $strings['target']['label'] ) )
+            ->set_key( "{$key}_target" )
+            ->set_name( 'target' )
             ->use_ui()
             ->use_ajax()
             ->allow_null()
+            ->allow_multiple()
             ->set_wrapper_width( 50 )
-            ->set_instructions( $strings['publisher']['instructions'] );
+            ->set_instructions( $strings['target']['instructions'] );
+
+        $tag_field = ( new Field\Select( $strings['tag']['label'] ) )
+            ->set_key( "{$key}_tag" )
+            ->set_name( 'tag' )
+            ->use_ui()
+            ->use_ajax()
+            ->allow_null()
+            ->allow_multiple()
+            ->set_wrapper_width( 50 )
+            ->set_instructions( $strings['tag']['instructions'] );
 
         $text_field = ( new Field\Text( $strings['text']['label'] ) )
-            ->set_key( "${key}_text" )
+            ->set_key( "{$key}_text" )
             ->set_name( 'text' )
             ->set_wrapper_width( 50 )
             ->set_instructions( $strings['text']['instructions'] );
 
         $page_size_field = ( new Field\Number( $strings['page_size']['label'] ) )
-            ->set_key( "${key}_page_size" )
+            ->set_key( "{$key}_page_size" )
             ->set_name( 'page_size' )
             ->set_min( 3 )
             ->set_max( 12 )
@@ -162,7 +178,7 @@ class EventsFields extends \Geniem\ACF\Field\Group {
             ->set_instructions( $strings['page_size']['instructions'] );
 
         $show_images_field = ( new Field\TrueFalse( $strings['show_images']['label'] ) )
-            ->set_key( "${key}_show_images" )
+            ->set_key( "{$key}_show_images" )
             ->set_name( 'show_images' )
             ->use_ui()
             ->set_default_value( true )
@@ -170,7 +186,7 @@ class EventsFields extends \Geniem\ACF\Field\Group {
             ->set_instructions( $strings['show_images']['instructions'] );
 
         $all_events_link_field = ( new Field\Link( $strings['all_events_link']['label'] ) )
-            ->set_key( "${key}_all_events_link" )
+            ->set_key( "{$key}_all_events_link" )
             ->set_name( 'all_events_link' )
             ->set_wrapper_width( 50 )
             ->set_instructions( $strings['all_events_link']['instructions'] );
@@ -180,9 +196,10 @@ class EventsFields extends \Geniem\ACF\Field\Group {
             $start_field,
             $end_field,
             $starts_today_field,
-            $keyword_field,
-            $location_field,
-            $publisher_field,
+            $category_field,
+            $area_field,
+            $target_field,
+            $tag_field,
             $text_field,
             $page_size_field,
             $show_images_field,

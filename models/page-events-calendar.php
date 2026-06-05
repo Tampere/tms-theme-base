@@ -4,11 +4,11 @@
  * Template Name: Tapahtumakalenteri
  */
 
-use TMS\Theme\Base\Formatters\EventsFormatter;
 use TMS\Theme\Base\Settings;
 use TMS\Theme\Base\Traits\Components;
 use TMS\Theme\Base\Traits\Pagination;
 use TMS\Theme\Base\Logger;
+use TMS\Theme\Base\Formatters\EventzFormatter;
 
 /**
  * The PageEventsCalendar class.
@@ -23,10 +23,16 @@ class PageEventsCalendar extends PageEventsSearch {
      */
     const TEMPLATE = 'models/page-events-calendar.php';
 
+
+    /**
+     * Maximum events per page.
+     */
+    const MAX_EVENTS_PER_PAGE = '999';
+
     /**
      * Description text
      */
-    public function description() : ?string {
+    public function description(): ?string {
         return get_field( 'description' );
     }
 
@@ -35,7 +41,7 @@ class PageEventsCalendar extends PageEventsSearch {
      *
      * @return string
      */
-    public function no_results() : string {
+    public function no_results(): string {
         return __( 'No results', 'tms-theme-base' );
     }
 
@@ -44,7 +50,7 @@ class PageEventsCalendar extends PageEventsSearch {
      *
      * @return bool
      */
-    public function is_grid() : bool {
+    public function is_grid(): bool {
         $is_grid = get_field( 'layout' ) ?? 'grid';
 
         return $is_grid === 'grid';
@@ -55,7 +61,7 @@ class PageEventsCalendar extends PageEventsSearch {
      *
      * @return string
      */
-    public function item_partial() : string {
+    public function item_partial(): string {
         $part = $this->is_grid() ? 'grid' : 'list';
 
         return 'views/page-events-calendar/page-events-calendar-item-' . $part;
@@ -64,7 +70,7 @@ class PageEventsCalendar extends PageEventsSearch {
     /**
      * Get events
      */
-    public function events() : ?array {
+    public function events(): ?array {
         try {
             $response = $this->get_events();
 
@@ -82,38 +88,51 @@ class PageEventsCalendar extends PageEventsSearch {
      *
      * @return array
      */
-    protected function get_events() : array {
-        $params = [
-            'start'       => get_field( 'start' ),
-            'end'         => get_field( 'end' ),
-            'keyword'     => get_field( 'keyword' ),
-            'location'    => get_field( 'location' ),
-            'publisher'   => get_field( 'publisher' ),
-            'sort'        => get_field( 'sort' ),
-            'page_size'   => get_option( 'posts_per_page' ),
-            'text'        => get_field( 'text' ),
-            'show_images' => get_field( 'show_images' ),
-            'page'        => get_query_var( 'paged', 1 ),
-            'include'     => 'organization,location,keywords',
-        ];
+    protected function get_events(): array {
+        $disable_pagination = \get_field( 'disable_pagination' );
+        $events_per_page    = $disable_pagination === true ? self::MAX_EVENTS_PER_PAGE : \get_option( 'posts_per_page' );
 
-        if ( ! empty( get_field( 'starts_today' ) ) && true === get_field( 'starts_today' ) ) {
-            $params['start'] = 'today';
+        $paged = \get_query_var( 'paged', 1 );
+        $skip  = 0;
+
+        if ( $paged > 1 ) {
+            $skip = ( $paged - 1 ) * $events_per_page;
         }
 
-        $formatter         = new EventsFormatter();
-        $params            = $formatter->format_query_params( $params );
-        $params['include'] = 'organization,location,keywords';
+        $params = [
+            'q'           => \get_field( 'text' ),
+            'start'       => \get_field( 'start' ),
+            'end'         => \get_field( 'end' ),
+            'category_id' => \get_field( 'category' ),
+            'areas'       => \get_field( 'area' ),
+            'targets'     => \get_field( 'target' ),
+            'tags'        => \get_field( 'tag' ),
+            'sort'        => 'startDate',
+            'show_images' => \get_field( 'show_images' ),
+        ];
+
+        if ( ! empty( \get_field( 'starts_today' ) ) && true === \get_field( 'starts_today' ) ) {
+            $params['start'] = date( 'Y-m-d' );
+        }
+
+        // Start date must be at least current date.
+        if ( $params['start'] < date( 'Y-m-d' ) ) {
+            $params['start'] = date( 'Y-m-d' );
+        }
+
+        $formatter = new EventzFormatter();
+        $params    = $formatter->format_query_params( $params );
 
         $cache_group = 'page-events-calendar';
-        $cache_key   = md5( wp_json_encode( $params ) );
-        $response    = wp_cache_get( $cache_key, $cache_group );
+        $cache_key   = md5( \wp_json_encode( $params ) );
+        $response    = \wp_cache_get( $cache_key, $cache_group );
 
         if ( empty( $response ) ) {
+
             $response = $this->do_get_events( $params );
 
             if ( ! empty( $response ) ) {
-                wp_cache_set(
+                \wp_cache_set(
                     $cache_key,
                     $response,
                     $cache_group,
@@ -122,7 +141,17 @@ class PageEventsCalendar extends PageEventsSearch {
             }
         }
 
-        $this->set_pagination_data( $response['meta']->count );
+        if ( ! empty( $response['events'] ) ) {
+
+            // Sort events.
+            usort( $response['events'], function ( $a, $b ) {
+                return $a['start_date_raw'] <=> $b['start_date_raw'];
+            } );
+
+            $this->set_pagination_data( count( $response['events'] ) );
+
+            $response['events'] = array_slice( $response['events'], $skip, $events_per_page );
+        }
 
         return $response;
     }
@@ -132,7 +161,7 @@ class PageEventsCalendar extends PageEventsSearch {
      *
      * @return array|null
      */
-    public function calendar_pages() : ?array {
+    public function calendar_pages(): ?array {
         if ( ! Settings::get_setting( 'show_related_events_calendars' ) ) {
             return null;
         }
@@ -150,7 +179,7 @@ class PageEventsCalendar extends PageEventsSearch {
             return null;
         }
 
-        $current_page = get_queried_object_id();
+        $current_page = \get_queried_object_id();
 
         $pages = array_filter( $the_query->posts, function ( $item ) use ( $current_page ) {
             return $item->ID !== $current_page;
@@ -158,9 +187,30 @@ class PageEventsCalendar extends PageEventsSearch {
 
         return array_map( function ( $item ) {
             return [
-                'url'   => get_the_permalink( $item->ID ),
+                'url'   => \get_the_permalink( $item->ID ),
                 'title' => $item->post_title,
             ];
         }, $pages );
+    }
+
+    /**
+     * Set pagination data
+     *
+     * @param int $event_count Event count.
+     *
+     * @return void
+     */
+    protected function set_pagination_data( int $event_count ): void {
+        $disable_pagination = \get_field( 'disable_pagination' );
+        $events_per_page    = $disable_pagination === true ? self::MAX_EVENTS_PER_PAGE : \get_option( 'posts_per_page' );
+
+        $per_page = $events_per_page;
+        $paged    = \get_query_var( 'paged' ) ? \get_query_var( 'paged' ) : 1;
+
+        $this->pagination           = new stdClass();
+        $this->pagination->page     = $paged;
+        $this->pagination->per_page = $per_page;
+        $this->pagination->items    = $event_count;
+        $this->pagination->max_page = (int) ceil( $event_count / $per_page );
     }
 }

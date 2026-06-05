@@ -41,31 +41,39 @@ class HeroFields extends \Geniem\ACF\Field\Group {
      */
     protected function sub_fields() : array {
         $strings = [
-            'image'       => [
+            'image'          => [
                 'label'        => 'Kuva',
                 'instructions' => '',
             ],
-            'video'       => [
-                'label'        => 'Videon URL',
+            'video'          => [
+                'label'        => 'Videotiedosto',
                 'instructions' => '',
             ],
-            'title'       => [
+            'video_caption'  => [
+                'label'        => 'Videon tekstivastine',
+                'instructions' => 'Tarkoitettu ruudunlukijoille, ei näytetä sivustolla.',
+            ],
+            'autoplay_video' => [
+                'label'        => 'Käynnistä video heti sivunlatauksessa',
+                'instructions' => '',
+            ],
+            'title'          => [
                 'label'        => 'Otsikko',
                 'instructions' => '',
             ],
-            'description' => [
+            'description'    => [
                 'label'        => 'Kuvaus',
                 'instructions' => '',
             ],
-            'link'        => [
+            'link'           => [
                 'label'        => 'Painike',
                 'instructions' => '',
             ],
-            'align'       => [
+            'align'          => [
                 'label'        => 'Tekstin tasaus',
                 'instructions' => '',
             ],
-            'use_box'     => [
+            'use_box'        => [
                 'label'        => 'Teksti värilaatikossa',
                 'instructions' => '',
             ],
@@ -74,26 +82,40 @@ class HeroFields extends \Geniem\ACF\Field\Group {
         $key = $this->get_key();
 
         $image_field = ( new Field\Image( $strings['image']['label'] ) )
-            ->set_key( "${key}_image" )
+            ->set_key( "{$key}_image" )
             ->set_name( 'image' )
             ->set_return_format( 'id' )
-            ->set_wrapper_width( 50 )
+            ->set_wrapper_width( 100 )
             ->set_instructions( $strings['image']['instructions'] );
 
-        $video_field = ( new Field\URL( $strings['video']['label'] ) )
-            ->set_key( "${key}_video" )
-            ->set_name( 'video' )
-            ->set_wrapper_width( 50 )
+        $video_field = ( new Field\File( $strings['video']['label'] ) )
+            ->set_key( "{$key}_video_file" )
+            ->set_name( 'video_file' )
+            ->set_mime_types( [ 'mp4' ] )
+            ->set_wrapper_width( 33 )
             ->set_instructions( $strings['video']['instructions'] );
 
+        $video_caption_field = ( new Field\Textarea( $strings['video_caption']['label'] ) )
+            ->set_key( "{$key}_video_caption" )
+            ->set_name( 'video_caption' )
+            ->set_wrapper_width( 33 )
+            ->set_instructions( $strings['video_caption']['instructions'] );
+
+        $autoplay_video_field = ( new Field\TrueFalse( $strings['autoplay_video']['label'] ) )
+            ->set_key( "{$key}_autoplay_video" )
+            ->set_name( 'autoplay_video' )
+            ->use_ui()
+            ->set_wrapper_width( 33 )
+            ->set_instructions( $strings['autoplay_video']['instructions'] );
+
         $title_field = ( new Field\Text( $strings['title']['label'] ) )
-            ->set_key( "${key}_title" )
+            ->set_key( "{$key}_title" )
             ->set_name( 'title' )
             ->set_wrapper_width( 50 )
             ->set_instructions( $strings['title']['instructions'] );
 
         $description_field = ( new Field\Textarea( $strings['description']['label'] ) )
-            ->set_key( "${key}_description" )
+            ->set_key( "{$key}_description" )
             ->set_name( 'description' )
             ->set_rows( 4 )
             ->set_new_lines( 'wpautop' )
@@ -101,13 +123,13 @@ class HeroFields extends \Geniem\ACF\Field\Group {
             ->set_instructions( $strings['description']['instructions'] );
 
         $link_field = ( new Field\Link( $strings['link']['label'] ) )
-            ->set_key( "${key}_link" )
+            ->set_key( "{$key}_link" )
             ->set_name( 'link' )
             ->set_wrapper_width( 40 )
             ->set_instructions( $strings['link']['instructions'] );
 
         $align_field = ( new Field\Select( $strings['align']['label'] ) )
-            ->set_key( "${key}_align" )
+            ->set_key( "{$key}_align" )
             ->set_name( 'align' )
             ->set_choices( [
                 'left'   => 'Vasen',
@@ -119,7 +141,7 @@ class HeroFields extends \Geniem\ACF\Field\Group {
             ->set_instructions( $strings['align']['instructions'] );
 
         $use_box_field = ( new Field\TrueFalse( $strings['use_box']['label'] ) )
-            ->set_key( "${key}_use_box" )
+            ->set_key( "{$key}_use_box" )
             ->set_name( 'use_box' )
             ->use_ui()
             ->set_wrapper_width( 30 )
@@ -128,6 +150,8 @@ class HeroFields extends \Geniem\ACF\Field\Group {
         return [
             $image_field,
             $video_field,
+            $video_caption_field,
+            $autoplay_video_field,
             $title_field,
             $description_field,
             $link_field,

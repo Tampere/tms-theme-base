@@ -23,7 +23,9 @@
 
                                     {?content.api_image_url}
                                         <div class="entry__figure pt-2">
-                                            <img src="{content.api_image_url|url}" loading="lazy" />
+                                            <img src="{content.api_image_url|url}"
+                                             {?content.api_image_alt}alt="{content.api_image_alt|attr}"{/content.api_image_alt}
+                                             loading="lazy" />
                                         </div>
 
                                         {>"views/single/single-meta" spacing_class="pt-5 pt-4-desktop pb-5 p-5-tablet" /}
@@ -36,8 +38,8 @@
                                     {/content.has_image}
 
                                     {?content.post_excerpt}
-                                        <p class="entry__lead">
-                                            {content.post_excerpt|s}
+                                        <p class="entry__lead is-size-5">
+                                            {content.post_excerpt|html}
                                         </p>
                                     {/content.post_excerpt}
 
@@ -46,7 +48,7 @@
                                     {?share_links}
                                         <div class="entry__share-links">
                                             <h2 class="h6 mt-6 mb-6">
-                                                {Strings.s.share.share_article|s}
+                                                {Strings.s.share.share_article|html}
                                             </h2>
 
                                             {>"ui/share-links" share_links=share_links li_class="mr-4" /}

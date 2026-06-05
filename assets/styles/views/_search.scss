@@ -34,10 +34,20 @@ $search-item-hover: $primary-dark !default;
 
 .search-item {
     &__inner {
+        display: flex;
+        flex-direction: column;
+
         @include from($desktop) {
             margin-right: 8.06rem;
         }
     }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
 
     &__meta-item,
     &__title {
@@ -84,13 +94,14 @@ $search-item-hover: $primary-dark !default;
                 }
 
                 &:first-child {
-                    a {
+                    a,
+                    span {
                         padding-right: .25rem;
                     }
                 }
 
                 span {
-                    margin-left: .25rem !important; // sass-lint:disable-line no-important
+                    margin-left: .25rem;
                 }
             }
         }

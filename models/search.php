@@ -33,17 +33,17 @@ class Search extends BaseModel {
      * @return void
      */
     public static function hooks() {
-        add_action( 'pre_get_posts', [ __CLASS__, 'modify_query' ] );
-        add_filter( 'redipress/scorer', [ __CLASS__, 'set_search_scorer' ], 10, 1 );
-        add_filter( 'redipress/schema_fields', [ __CLASS__, 'set_fields_weight' ], 10, 1 );
-        add_filter( 'redipress/ignore_query_vars', [ __CLASS__, 'set_ignored_query_vars' ], 10, 1 );
+        \add_action( 'pre_get_posts', [ __CLASS__, 'modify_query' ] );
+        \add_filter( 'redipress/scorer', [ __CLASS__, 'set_search_scorer' ], 10, 1 );
+        \add_filter( 'redipress/index/posts/schema_fields', [ __CLASS__, 'set_fields_weight' ], 10, 1 );
+        \add_filter( 'redipress/ignore_query_vars', [ __CLASS__, 'set_ignored_query_vars' ], 10, 1 );
     }
 
     /**
      * Page title
      */
     public function page_title() : string {
-        return __( 'Search results', 'tms-theme-base' );
+        return \__( 'Search results', 'tms-theme-base' );
     }
 
     /**
@@ -191,6 +191,17 @@ class Search extends BaseModel {
         $post_excerpt                    = array_search( 'post_excerpt', array_column( $fields, 'name' ), true );
         $fields[ $post_excerpt ]->weight = 5;
 
+        // Include fields
+        $fields[] = new \Geniem\RediPress\Entity\NumericField( [
+            'name'     => 'is_active',
+        ] );
+        $fields[] = new \Geniem\RediPress\Entity\NumericField( [
+            'name'     => 'apply_start',
+        ] );
+        $fields[] = new \Geniem\RediPress\Entity\NumericField( [
+            'name'     => 'apply_end',
+        ] );
+
         return $fields;
     }
 
@@ -282,7 +293,7 @@ class Search extends BaseModel {
 
             switch ( $post_item->post_type ) {
                 case Page::SLUG:
-                    $post_item->content_type = get_post_type_object( Page::SLUG )->labels->singular_name;
+                    $post_item->page_content_type = \get_post_type_object( Page::SLUG )->labels->singular_name;
                     $post_item->breadcrumbs  = $this->prepare_by_type(
                         Page::SLUG,
                         $post_item->ID,
@@ -296,8 +307,6 @@ class Search extends BaseModel {
 
                     break;
                 case Post::SLUG:
-                    $post_item->content_type = get_post_type_object( Post::SLUG )->labels->singular_name;
-
                     $meta = $this->format_result_item_meta(
                         $post_item,
                         Post::get_primary_category( $post_item->ID )
@@ -305,7 +314,7 @@ class Search extends BaseModel {
 
                     break;
                 case BlogArticle::SLUG:
-                    $post_item->content_type = get_post_type_object( BlogArticle::SLUG )->labels->singular_name;
+                    $post_item->content_type = \get_post_type_object( BlogArticle::SLUG )->labels->singular_name;
 
                     $meta = $this->format_result_item_meta(
                         $post_item,
@@ -320,9 +329,9 @@ class Search extends BaseModel {
             }
 
             $post_item->meta      = $meta;
-            $post_item->permalink = get_permalink( $post_item->ID );
+            $post_item->permalink = \get_permalink( $post_item->ID );
 
-            apply_filters( 'tms/theme/base/search_result_item', $post_item );
+            \apply_filters( 'tms/theme/base/search_result_item', $post_item );
         }
 
         return $posts;

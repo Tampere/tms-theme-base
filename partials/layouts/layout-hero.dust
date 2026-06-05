@@ -1,22 +1,52 @@
-<section {?anchor}id="{anchor|s}"{/anchor}
-         class="hero is-relative has-background-cover {container_class|s}" {@inlinebg id=image size="fullhd" /}>
+<section {?anchor}id="{anchor|attr}"{/anchor}
+         class="hero is-relative has-background-cover {container_class|attr}" {@inlinebg id=image size="fullhd" /}>
     {?use_overlay}
         <div class="overlay overlay--dark-50"></div>
     {/use_overlay}
 
-    {?video}
-        <div class="is-overlay is-clipped" aria-hidden="true" tabindex="-1">
-            <video src="{video}" class="hero__video is-hidden" loop muted playsinline></video>
+    {?video_file}
+        <div class="is-overlay is-clipped" {^autoplay_video}aria-hidden="true" tabindex="-1"{/autoplay_video}>
+            <video src="{video_file.url|url}" class="hero__video {^autoplay_video}is-hidden{/autoplay_video}"
+                loop muted playsinline
+                {?video_caption}aria-describedby="video-caption"{/video_caption}
+                {?autoplay_video}autoplay{/autoplay_video}>
+            </video>
 
-            <button class="hero__control hero__control--play" aria-label="{Strings.s.video.play|s}">
+            <button class="hero__control hero__control--play-large {?autoplay_video}is-hidden{/autoplay_video}" aria-label="{Strings.s.video.play|attr}">
                 {>"ui/icon" icon="play" class="icon--xxxlarge"  /}
             </button>
 
-            <button class="hero__control hero__control--pause" aria-label="{Strings.s.video.pause|s}">
-                {>"ui/icon" icon="pause" class="icon--xxxlarge"  /}
-            </button>
+            <div class="hero__video-controls columns p-2 {^autoplay_video}is-hidden{/autoplay_video}">
+                <div class="column">
+                    <button class="hero__control--play mr-1" aria-label="{Strings.s.video.play|attr}">
+                        {>"ui/icon" icon="play" class="icon--large is-primary-invert"  /}
+                    </button>
+                    <button class="hero__control--pause mr-1" aria-label="{Strings.s.video.pause|attr}">
+                        {>"ui/icon" icon="pause" class="icon--large is-primary-invert"  /}
+                    </button>
+                    <button class="hero__control--stop mr-1" aria-label="{Strings.s.video.stop|attr}">
+                        {>"ui/icon" icon="stop" class="icon--large is-primary-invert"  /}
+                    </button>
+                </div>
+                <div class="column is-flex is-justify-content-end">
+                    <input id="hero-volume" class="hero__control--volume mr-1" type="range" min="0" max="100" step="1" value="0">
+                    <label class="is-sr-only" for="hero-volume">
+                        {Strings.s.video.volume|html}
+                    </label>
+                    <button class="hero__control--mute" type="button" data-state="mute" aria-label="{Strings.s.video.mute|attr}">
+                        {>"ui/icon" icon="volume" class="icon--large hero__volume is-hidden is-primary-invert"  /}
+                        {>"ui/icon" icon="volume-none" class="icon--large hero__volume-none is-primary-invert"  /}
+                    </button>
+                </div>
+            </div>
+
+            {?video_caption}
+                <div id="video-caption" class="is-sr-only">
+                    {video_caption|html}
+                </div>
+            {/video_caption}
         </div>
-    {/video}
+    {/video_file}
 
     <div class="hero__inner">
         <div class="container">
@@ -25,11 +55,11 @@
                     <div class="hero__box is-relative {box_classes|s}">
                         {?title}
                             <h1 class="mt-0 h2 no-hyphens">
-                                {title|s}
+                                {title|html}
                             </h1>
                         {/title}
 
-                        {description|s}
+                        {description|kses}
 
                         {>"ui/button-link" link=link classes=button_classes icon="chevron-right" icon_classes="icon--medium" /}
                     </div>
